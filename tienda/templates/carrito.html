@@ -10,6 +10,17 @@
 
 {% block contenido %}
                 
-<h3>aca pasan cosas</h3>
+<h2>Agregar producto al carrito</h2>
+<form action="{% url 'aniadir_carrito' %}" method="POST"> {% csrf_token %}
+
+    <table>
+    {{ formulario.as_table }}
+    </table>
+    <br>
+    <input type="submit" value="Agregar al carrito">
+
+</form>
+
+<h3>{{ mensaje }}</h3>
 
 {% endblock %}

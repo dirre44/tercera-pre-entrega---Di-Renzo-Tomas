@@ -6,10 +6,21 @@
 
 {% block titulo %} Agregar amigos {% endblock %}
 
-{% block subtitulo %} Aca agrego amigos {% endblock %}
+{% block subtitulo %} Agregar amigo {% endblock %}
 
 {% block contenido %}
-                
-<h3>amigacho</h3>
+
+<br>
+<form action="{% url 'aniadir_amigos' %}" method="POST"> {% csrf_token %}
+
+    <table>
+    {{ formulario.as_table }}
+    </table>
+    <br>
+    <input type="submit" value="Agregar amigo">
+
+</form>
+
+<h3>{{ mensaje }}</h3>
 
 {% endblock %}

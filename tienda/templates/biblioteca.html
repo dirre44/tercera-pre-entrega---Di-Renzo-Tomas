@@ -6,10 +6,20 @@
 
 {% block titulo %} Agregar articulos a mi biblioteca {% endblock %}
 
-{% block subtitulo %} aca agrego articulos {% endblock %}
+{% block subtitulo %} agregar productos a la biblioteca {% endblock %}
 
 {% block contenido %}
                 
-<h3>aca pasan cosas</h3>
+<form action="{% url 'aniadir_biblioteca' %}" method="POST"> {% csrf_token %}
+
+    <table>
+    {{ formulario.as_table }}
+    </table>
+    <br>
+    <input type="submit" value="Agregar a la biblioteca">
+
+</form>
+
+<h3>{{ mensaje }}</h3>
 
 {% endblock %}
