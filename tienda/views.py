@@ -29,7 +29,6 @@ def aniadir_carrito(request):
     else:
         return render (request, "carrito.html", {"formulario":formulario_carrito})
         
-
 def aniadir_amigos(request):
     formulario_amigos=Amigos_form()
 
@@ -48,11 +47,7 @@ def aniadir_amigos(request):
             return render (request, "amigos.html", {"formulario":formulario_amigos, "mensaje":"datos invalidos"})
     else:
         return render (request, "amigos.html", {"formulario":formulario_amigos})
-
-
-    return render (request, "amigos.html")
     
-
 def aniadir_biblioteca(request):
     formulario_biblioteca=Biblioteca_form()
 
@@ -71,3 +66,12 @@ def aniadir_biblioteca(request):
     else:
         return render (request, "biblioteca.html", {"formulario":formulario_biblioteca})
     
+def busqueda_amigos (request):
+    usuario=request.GET["usuario"]
+
+    if usuario!="":
+        amigos=Lista_amigos.objects.filter(usuario__icontains=usuario)
+        return render (request, "busqueda_amigos.html", {"amigos":amigos})
+    else:
+        return render (request, "busqueda_amigos.html", {"mensaje": "no se ha ingresado nada"})
+

@@ -6,10 +6,17 @@
 
 {% block titulo %} Bienvenidos a mi tienda {% endblock %}
 
-{% block subtitulo %} Mi pagina de inicio {% endblock %}
+{% block subtitulo %} Desde aca vas a poder buscar juegos en la biblioteca {% endblock %}
 
 {% block contenido %}
                 
-<h3>aca pasan cosas</h3>
+<form action="{% url 'buscar_amigos' %}" method="get">
+
+    <input type="text" name="usuario" id="usuario" placeholder="inserte usuario">
+
+    <input type="submit" value="buscar usuario">
+
+</form>
+<h3>{{ mensaje }}</h3>
 
 {% endblock %}

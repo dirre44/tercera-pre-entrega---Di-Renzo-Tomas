@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block encabezado %} inicio {% endblock %}
+
+{% block titulo %} Bienvenidos a mi tienda {% endblock %}
+
+{% block subtitulo %} Resultados de la busqueda {% endblock %}
+
+{% block contenido %}
+
+<br>
+
+{% if amigos %}
+    
+    {% for amigo in amigos %}
+        <h4>{{ amigo.nombre }} - {{ amigo.usuario }}</h4>
+    {% endfor %}
+
+{% else %}
+    <h4> NO TENES AMIGOS (con ese usuario)  </h4> 
+{% endif %}
+
+
+{% endblock %}
