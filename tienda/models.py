@@ -4,14 +4,14 @@ from django.db import models
 
 class Carrito (models.Model):
     juego = models.CharField(max_length=50)
-    precio = models.IntegerField
+    precio = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.juego} - {self.precio}"
     
 class  Biblioteca (models.Model):
     juego = models.CharField(max_length=50)
-    instalado = models.BooleanField
+    instalado = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.juego} - {self.instalado}"
@@ -19,7 +19,7 @@ class  Biblioteca (models.Model):
 class Lista_amigos (models.Model):
     nombre = models.CharField(max_length=50)
     usuario = models.CharField(max_length=50)
-    online = models.BooleanField
+    online = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.nombre} - {self.usuario} - {self.online}"
