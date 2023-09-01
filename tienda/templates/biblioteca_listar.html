@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block encabezado %} biblioteca {% endblock %}
+
+{% block titulo %} Agregar articulos a mi biblioteca {% endblock %}
+
+{% block subtitulo %} agregar productos a la biblioteca {% endblock %}
+
+{% block contenido %}
+<ul>
+    {% for juego in object_list %}
+    <li>
+        {{juego}}
+        <a class ="btn btn-primary" href="{% url 'biblioteca_detalle' juego.id %}">Mostrar</a>
+        <a class ="btn btn-danger" href="{% url 'biblioteca_borrar' juego.id %}">borrar??</a>
+        <a class ="btn btn-success" href="{% url 'biblioteca_editar' juego.id %}">editar</a>
+    </li>
+    {% endfor %}
+</ul>
+<a class ="btn btn-primary" href="{% url 'biblioteca_crear' %}">Agregar estudiante</a>
+
+<h3>{{ mensaje }}</h3>
+
+{% endblock %}

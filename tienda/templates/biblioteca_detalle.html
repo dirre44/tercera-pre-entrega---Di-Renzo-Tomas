@@ -9,16 +9,9 @@
 {% block subtitulo %} agregar productos a la biblioteca {% endblock %}
 
 {% block contenido %}
-                
-<form action="{% url 'aniadir_biblioteca' %}" method="POST"> {% csrf_token %}
+<h1>Datos del juego</h1>
 
-    <table>
-    {{ formulario.as_table }}
-    </table>
-    <br>
-    <input type="submit" value="Agregar a la biblioteca">
-
-</form>
-<h3>{{ mensaje }}</h3>
+<p>Juego: <i>{{ biblioteca.juego }}</i></p>
+<p>Instalado: <i>{{ biblioteca.instalado }}</i></p>
 
 {% endblock %}

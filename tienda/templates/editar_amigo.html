@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block encabezado %} editar amigo {% endblock %}
+
+{% block titulo %} Aca editamos {% endblock %}
+
+{% block subtitulo %} Editando a {{ amigo.usuario }} {% endblock %}
+
+{% block contenido %}
+
+<h3>{{ mensaje }}</h3>
+
+<form action="{% url 'editar_amigo' amigo.id %}" method="POST">{% csrf_token %}
+    <table>
+
+        {{ formulario.as_table }}
+
+    </table>
+    <input type="submit" value="Guardar Cambios">
+</form>
+
+
+
+{% endblock %}

@@ -23,4 +23,33 @@
 
 <h3>{{ mensaje }}</h3>
 
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Online</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for amigo in amigos %}
+            <tr>
+                <td>
+                    {{ amigo.nombre }}
+                </td>
+                <td>
+                    {{ amigo.usuario }}
+                </td>
+                <td>
+                    {{ amigo.online }}
+                </td>
+                <td>
+                    <a class="btn btn-success" href="{% url 'editar_amigo' amigo.id %}">Editar</a>
+                    <a class="btn btn-danger" href="{% url 'eliminar_amigo' amigo.id %}">Eliminar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
