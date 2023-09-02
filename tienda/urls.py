@@ -14,5 +14,10 @@ urlpatterns = [
     path("biblioteca_crear/", Biblioteca_crear.as_view(), name="biblioteca_crear"),
     path("biblioteca_detalle/<pk>", Biblioteca_detalle.as_view(), name="biblioteca_detalle"),
     path("biblioteca_borrar/<pk>", Biblioteca_borrar.as_view(), name="biblioteca_borrar"),
-    path("biblioteca_editar/<pk>", Biblioteca_editar.as_view(), name="biblioteca_editar")
+    path("biblioteca_editar/<pk>", Biblioteca_editar.as_view(), name="biblioteca_editar"),
+
+    # LOGIN, LOGOUT, REGISTER
+    path("login/", login_request, name="login"),
+    path("register/", register_usuario, name="registro"),
+    path("logout/", LogoutView.as_view(next_page='login'), name="logout")
 ]
