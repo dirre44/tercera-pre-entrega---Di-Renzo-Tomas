@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block encabezado %} editar usuario {% endblock %}
+
+{% block titulo %} Aca editamos {% endblock %}
+
+{% block subtitulo %} Editando a {{ nombre_usuario }} {% endblock %}
+
+{% block contenido %}
+
+<h3>{{ mensaje }}</h3>
+
+<form action="{% url 'editar_usuario' %}" method="POST">{% csrf_token %}
+    <table>
+
+        {{ formulario.as_table }}
+
+    </table>
+    <input type="submit" value="Guardar">
+</form>
+
+
+
+{% endblock %}

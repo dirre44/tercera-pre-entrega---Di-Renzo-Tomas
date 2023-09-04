@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Lista_amigos)
 admin.site.register(Biblioteca)
 admin.site.register(Carrito)
+admin.site.register(Avatar)

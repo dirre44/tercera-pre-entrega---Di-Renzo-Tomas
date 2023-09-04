@@ -23,3 +23,14 @@ class register_usuario_form(UserCreationForm):
         model = User
         fields={'username', 'email', 'password1', 'password2'}
         help_texts= { k:'' for k in fields }
+
+class Editar_usuario_form(UserCreationForm):
+    first_name=forms.CharField(label='Modificar nombre')
+    last_name=forms.CharField(label='Modificar apellido')
+    email=forms.EmailField(label='Email usuario')
+    password1=forms.CharField(label='contraseña', widget=forms.PasswordInput)
+    password2=forms.CharField(label='confirmar contraseña', widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields={'email', 'first_name', 'last_name', 'password1', 'password2'}
+        help_texts= { k:'' for k in fields }

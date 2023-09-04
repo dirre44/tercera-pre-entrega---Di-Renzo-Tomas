@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from .models import *
+from .forms import * 
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import Template, Context, loader
-from .forms import * 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
@@ -176,5 +176,27 @@ def register_usuario(request):
         mensaje='ingrese nuevo usuario y contraseña'
         return render(request, 'register.html', {'formulario':form, 'mensaje':mensaje})
     pass
+
+def editar_usuario (request):
+    usuario=request.user # el usuario SIEMPRE esta en el request
+    if request.method=='POST':
+        form=Editar_usuario_form(request.POST)
+        if form.is_valid():
+            info=form.cleaned_data
+            usuario.first_name=info['first_name']
+            usuario.last_name=info['last_name']
+            usuario.email=info['email']
+            usuario.password1=info['password1']
+            usuario.password2=info['password2']
+            usuario.save()
+            mensaje=f'Usuario "{usuario}" editado!'
+            return render(request, 'inicio.html', {'mensaje':mensaje, 'nombre_usuario':usuario.username})
+        else:
+            mensaje='datos invalidos'
+            return render(request, 'editar_usuario.html', {'mensaje':mensaje, 'formulario':form, 'nombre_usuario':usuario.username})
+    else:
+        form=Editar_usuario_form(instance=usuario)
+        mensaje=''
+        return render(request, 'editar_usuario.html', {'mensaje':mensaje, 'formulario':form, 'nombre_usuario':usuario.username})
 
 
