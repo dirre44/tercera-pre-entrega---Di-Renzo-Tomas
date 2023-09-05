@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from .models import *
 from .forms import * 
 from django.shortcuts import render
@@ -13,9 +14,18 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-def inicio(request):
+def obtener_avatar(request):
+    if request.user.is_authenticated:
+        avatar= Avatar.objects.filter(user=request.user.id)
+        if len(avatar) != 0:
+            return avatar[0].imagen.url
+        else:
+            return '/media/avatares/default_avatar.png'
+    else:
+        return '/media/avatares/Empty.png'
 
-    return render (request, "inicio.html")
+def inicio(request):
+    return render (request, "inicio.html",{'avatar':obtener_avatar(request)})
 
 @login_required
 def aniadir_carrito(request):
@@ -30,16 +40,19 @@ def aniadir_carrito(request):
             precio=info["precio"]
             juego=Carrito(juego=nombre, precio=precio)
             juego.save()
-            return render (request, "carrito.html", {"formulario":formulario_carrito,"mensaje":f"{nombre} fue añadido al carrito"})
+            return render (request, "carrito.html", {"formulario":formulario_carrito,"mensaje":f"{nombre} fue añadido al carrito", 'avatar':obtener_avatar(request)})
         else:
-            return render (request, "carrito.html", {"formulario":formulario_carrito,"mensaje":"datos invalidos"})
+            return render (request, "carrito.html", {"formulario":formulario_carrito,"mensaje":"datos invalidos", 'avatar':obtener_avatar(request)})
 
     else:
-        return render (request, "carrito.html", {"formulario":formulario_carrito})
+        return render (request, "carrito.html", {"formulario":formulario_carrito, 'avatar':obtener_avatar(request)})
         
 class Biblioteca_listar (LoginRequiredMixin, ListView):
     model=Biblioteca
     template_name="biblioteca_listar.html"
+    #def get_context_data(self, **kwargs):
+        #context = super().get_context_data(**kwargs)
+        #context['avatar']=obtener_avatar(request)
 
 class Biblioteca_crear(LoginRequiredMixin, CreateView):
     model=Biblioteca
@@ -102,11 +115,11 @@ def editar_amigo(request, id):
             amigos=Lista_amigos.objects.all()
             formulario_amigos=Amigos_form()
             mensaje="Usuario editado"
-            return render (request, "amigos.html", {"formulario":formulario_amigos, "amigos":amigos, "mensaje":mensaje})
+            return render (request, "amigos.html", {"formulario":formulario_amigos, "amigos":amigos, "mensaje":mensaje, 'avatar':obtener_avatar(request)})
     else:
         amigo=Lista_amigos.objects.get(id=id)
-        form_editar=Amigos_form(initial={"nombre":amigo.nombre, "usuario":amigo.usuario, "online":amigo.online})
-        return render (request, "editar_amigo.html", {"formulario":form_editar, "amigo":amigo})
+        form_editar=Amigos_form(initial={"nombre":amigo.nombre, "usuario":amigo.usuario, "online":amigo.online, 'avatar':obtener_avatar(request)})
+        return render (request, "editar_amigo.html", {"formulario":form_editar, "amigo":amigo, 'avatar':obtener_avatar(request)})
     pass
 
 @login_required  
@@ -121,11 +134,11 @@ def aniadir_biblioteca(request):
             instalado=info["instalado"]
             juego=Biblioteca(juego=nombre,instalado=instalado)
             juego.save()
-            return render (request, "biblioteca.html", {"formulario":formulario_biblioteca, "mensaje":f"{nombre} fue añadido a la biblioteca"})
+            return render (request, "biblioteca.html", {"formulario":formulario_biblioteca, "mensaje":f"{nombre} fue añadido a la biblioteca", 'avatar':obtener_avatar(request)})
         else:
-            return render (request, "biblioteca.html", {"formulario":formulario_biblioteca,"mensaje":"datos invalidos"})
+            return render (request, "biblioteca.html", {"formulario":formulario_biblioteca,"mensaje":"datos invalidos", 'avatar':obtener_avatar(request)})
     else:
-        return render (request, "biblioteca.html", {"formulario":formulario_biblioteca})
+        return render (request, "biblioteca.html", {"formulario":formulario_biblioteca, 'avatar':obtener_avatar(request)})
 
 @login_required  
 def busqueda_amigos (request):
@@ -133,9 +146,9 @@ def busqueda_amigos (request):
 
     if usuario!="":
         amigos=Lista_amigos.objects.filter(usuario__icontains=usuario)
-        return render (request, "busqueda_amigos.html", {"amigos":amigos})
+        return render (request, "busqueda_amigos.html", {"amigos":amigos, 'avatar':obtener_avatar(request)})
     else:
-        return render (request, "busqueda_amigos.html", {"mensaje": "no se ha ingresado nada"})
+        return render (request, "busqueda_amigos.html", {"mensaje": "no se ha ingresado nada", 'avatar':obtener_avatar(request)})
     
 
 def login_request(request):
@@ -149,14 +162,14 @@ def login_request(request):
             if usuario != None:
                 login (request, usuario)
                 mensaje= f'usuario "{usuario}" logeado correctamente'
-                return render (request, 'inicio.html', {'mensaje': mensaje})
+                return render (request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtener_avatar(request)})
         else:
             mensaje='datos invalidos'
-            return render (request, 'login.html', {'formulario':form,'mensaje': mensaje})
+            return render (request, 'login.html', {'formulario':form,'mensaje': mensaje, 'avatar':obtener_avatar(request)})
     else:
         form=AuthenticationForm()
         mensaje='ingrese usuario y contraseña'
-    return render(request, 'login.html', {'formulario':form, 'mensaje':mensaje})
+    return render(request, 'login.html', {'formulario':form, 'mensaje':mensaje, 'avatar':obtener_avatar(request)})
 
 def register_usuario(request):
     if request.method=='POST':
@@ -167,14 +180,14 @@ def register_usuario(request):
             usu =info["username"]
             form.save()
             mensaje = f'usuario "{usu}" creado correctamente'
-            return render (request, 'inicio.html', {'mensaje': mensaje})
+            return render (request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtener_avatar(request)})
         else:
             mensaje='datos invalidos'
-            return render (request, 'register.html', {'formulario':form,'mensaje': mensaje})
+            return render (request, 'register.html', {'formulario':form,'mensaje': mensaje, 'avatar':obtener_avatar(request)})
     else:
         form=register_usuario_form()
         mensaje='ingrese nuevo usuario y contraseña'
-        return render(request, 'register.html', {'formulario':form, 'mensaje':mensaje})
+        return render(request, 'register.html', {'formulario':form, 'mensaje':mensaje, 'avatar':obtener_avatar(request)})
     pass
 
 def editar_usuario (request):
@@ -190,13 +203,29 @@ def editar_usuario (request):
             usuario.password2=info['password2']
             usuario.save()
             mensaje=f'Usuario "{usuario}" editado!'
-            return render(request, 'inicio.html', {'mensaje':mensaje, 'nombre_usuario':usuario.username})
+            return render(request, 'inicio.html', {'mensaje':mensaje, 'nombre_usuario':usuario.username, 'avatar':obtener_avatar(request)})
         else:
             mensaje='datos invalidos'
-            return render(request, 'editar_usuario.html', {'mensaje':mensaje, 'formulario':form, 'nombre_usuario':usuario.username})
+            return render(request, 'editar_usuario.html', {'mensaje':mensaje, 'formulario':form, 'nombre_usuario':usuario.username, 'avatar':obtener_avatar(request)})
     else:
         form=Editar_usuario_form(instance=usuario)
         mensaje=''
-        return render(request, 'editar_usuario.html', {'mensaje':mensaje, 'formulario':form, 'nombre_usuario':usuario.username})
+        return render(request, 'editar_usuario.html', {'mensaje':mensaje, 'formulario':form, 'nombre_usuario':usuario.username, 'avatar':obtener_avatar(request)})
+
+def agregar_avatar (request):
+    if request.method=="POST":
+        form=Avatar_form(request.POST, request.FILES)
+        if form.is_valid():
+            avatar=Avatar(user=request.user, imagen=request.FILES['imagen'])
+            avatar_viejo=Avatar.objects.filter(user=request.user)
+            if len(avatar_viejo)>0:
+                avatar_viejo[0].delete()
+            avatar.save()
+            formulario=Editar_usuario_form(instance=request.user)
+            return render(request,"editar_usuario.html", {"mensaje": 'avatar agregado', 'avatar':obtener_avatar(request), 'formulario':formulario})
+    else:
+        form=Avatar_form(request.POST)
+        return render(request, 'agregar_avatar.html', {'formulario':form, 'usuario':request.user.username})
+    pass
 
 

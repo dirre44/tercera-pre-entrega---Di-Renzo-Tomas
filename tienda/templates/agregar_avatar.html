@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block encabezado %} Login{% endblock %}
+
+{% block titulo %} Aca te podes logear {% endblock %}
+
+{% block subtitulo %} Ingrese usuario y contraseña {% endblock %}
+
+{% block contenido %}                
+
+<h3>{{ mensaje }}</h3>
+
+<form action="{% url 'agregar_avatar' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+    <table>
+        {{ formulario.as_table }}
+    </table>
+    <input type="submit" value="Ingresar">
+</form>
+
+{% endblock %}
